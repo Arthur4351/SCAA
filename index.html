@@ -349,7 +349,7 @@
         .logout-container .logout-btn-styled:hover {
             background-color: #c62828;
             transform: translateY(-1px);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
         .action-button {
             background: none;
@@ -474,6 +474,52 @@
             overflow-y: auto;
             padding: 15px;
         }
+        /* Estilos da nova seção de pesquisa no histórico */
+        .historico-acoes {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .historico-acoes .search-container {
+            display: flex;
+            gap: 5px;
+            flex-grow: 1;
+        }
+        .historico-acoes .search-container input {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .historico-acoes .search-container button {
+            background-color: #ffca28;
+            color: #263238;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .historico-acoes .search-container button:hover {
+            background-color: #ffeb3b;
+        }
+        .historico-acoes .export-btn {
+            background-color: #e53935;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .historico-acoes .export-btn:hover {
+            background-color: #c62828;
+        }
 
         /* Responsividade geral */
         @media (max-width: 768px) {
@@ -524,6 +570,10 @@
             table thead th, table tbody td {
                 padding: 6px 8px;
                 font-size: 0.8em;
+            }
+            .historico-acoes .search-container {
+                flex-direction: column;
+                width: 100%;
             }
         }
     </style>
@@ -656,6 +706,16 @@
 
     <div id="historico-section" class="section-content active">
         <h2>Histórico de Clientes</h2>
+        
+        <div class="historico-acoes">
+            <div class="search-container">
+                <input type="text" id="search-cliente-id" placeholder="Pesquisar por ID...">
+                <button id="search-btn"><span class="material-symbols-outlined">search</span></button>
+                <button id="clear-search-btn"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <button class="export-btn" id="export-pdf-btn"><span class="material-symbols-outlined">picture_as_pdf</span> Gerar PDF</button>
+        </div>
+
         <div class="table-responsive">
             <table id="historico-tabela">
                 <thead>
@@ -666,6 +726,8 @@
                         <th>Endereço</th>
                         <th>Tipo de Serviço</th>
                         <th>Status do Serviço</th>
+                        <th>Consumo (m³)</th>
+                        <th>Valor Total (R$)</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -680,6 +742,11 @@
         <p>Dados simulados para demonstração. Adicione clientes e calcule o consumo para ver os gráficos mudarem.</p>
         
         <div style="background: #fff; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+            <h3>Clientes por Tipo de Serviço</h3>
+            <canvas id="grafico-tipo-servico"></canvas>
+        </div>
+
+        <div style="background: #fff; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
             <h3>Consumo por Tipo de Serviço (m³)</h3>
             <canvas id="grafico-consumo"></canvas>
         </div>
@@ -693,6 +760,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
 <script>
     // --- Funções de localStorage para gerenciar dados ---
@@ -712,6 +781,8 @@
     let { clientes, usuario: registeredUser, idCounter: clienteIdCounter } = carregarDados();
     let graficoConsumo = null;
     let graficoStatusClientes = null;
+    let graficoTipoServico = null;
+    const VALOR_M3 = 10;
 
     document.addEventListener('DOMContentLoaded', () => {
         showSection('historico-section');
@@ -746,6 +817,17 @@
                 icon: 'warning',
                 title: 'Usuário já existe!',
                 text: 'Já existe um usuário cadastrado. Você pode apenas fazer login.',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            return;
+        }
+
+        if (password.length < 6) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Senha Inválida',
+                text: 'A senha deve ter no mínimo 6 dígitos.',
                 showConfirmButton: false,
                 timer: 3000
             });
@@ -862,20 +944,82 @@
         }
     }
 
-    function renderizarHistorico() {
+    document.getElementById('search-btn').addEventListener('click', function() {
+        const id = document.getElementById('search-cliente-id').value;
+        const clienteEncontrado = clientes.find(c => c.id == id);
+        
+        if (clienteEncontrado) {
+            renderizarHistorico([clienteEncontrado]);
+        } else {
+            Swal.fire('Cliente não encontrado', `Nenhum cliente com o ID "${id}" foi encontrado.`, 'warning');
+        }
+    });
+
+    document.getElementById('clear-search-btn').addEventListener('click', function() {
+        document.getElementById('search-cliente-id').value = '';
+        renderizarHistorico();
+    });
+
+    document.getElementById('export-pdf-btn').addEventListener('click', function() {
+        if (clientes.length === 0) {
+            Swal.fire('Nenhum dado para exportar', 'Não há clientes cadastrados para gerar o relatório.', 'info');
+        } else {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            const headers = [['ID', 'Nome', 'CPF', 'Endereço', 'Tipo', 'Status', 'Consumo (m³)', 'Valor (R$)']];
+            const data = clientes.map(cliente => [
+                cliente.id, 
+                cliente.nome, 
+                cliente.cpf, 
+                cliente.endereco, 
+                cliente.tipoServico, 
+                cliente.statusServico,
+                cliente.consumo ? cliente.consumo.toFixed(2) : 'N/A',
+                cliente.valorTotal ? `R$ ${cliente.valorTotal.toFixed(2)}` : 'N/A'
+            ]);
+
+            doc.autoTable({
+                startY: 20,
+                head: headers,
+                body: data,
+                theme: 'striped',
+                headStyles: { fillColor: [69, 90, 100] },
+                styles: {
+                    fontSize: 8,
+                    cellPadding: 2,
+                },
+                columnStyles: {
+                    0: { cellWidth: 15 },
+                    1: { cellWidth: 35 },
+                    2: { cellWidth: 25 },
+                    3: { cellWidth: 45 },
+                    4: { cellWidth: 20 },
+                    5: { cellWidth: 20 },
+                    6: { cellWidth: 20 },
+                    7: { cellWidth: 20 }
+                }
+            });
+
+            doc.save('relatorio_clientes.pdf');
+            Swal.fire('Sucesso!', 'Relatório PDF gerado e baixado com sucesso.', 'success');
+        }
+    });
+
+    function renderizarHistorico(clientesParaRenderizar = clientes) {
         const tbody = document.querySelector('#historico-tabela tbody');
         tbody.innerHTML = '';
-        if (clientes.length === 0) {
+        if (clientesParaRenderizar.length === 0) {
             const row = tbody.insertRow();
             const cell = row.insertCell(0);
-            cell.colSpan = 7;
+            cell.colSpan = 9;
             cell.textContent = "Nenhum cliente cadastrado.";
             cell.style.textAlign = "center";
             cell.style.color = "#ccc";
             return;
         }
 
-        clientes.forEach((cliente, index) => {
+        clientesParaRenderizar.forEach((cliente, index) => {
             const row = tbody.insertRow();
             row.classList.add('historico-row');
             row.style.setProperty('--row-index', index);
@@ -905,8 +1049,11 @@
             statusText.textContent = cliente.statusServico;
             statusCell.appendChild(statusIndicator);
             statusCell.appendChild(statusText);
+            
+            row.insertCell(6).textContent = cliente.consumo ? cliente.consumo.toFixed(2) : 'N/A';
+            row.insertCell(7).textContent = cliente.valorTotal ? `R$ ${cliente.valorTotal.toFixed(2)}` : 'N/A';
 
-            const acoesCell = row.insertCell(6);
+            const acoesCell = row.insertCell(8);
             const deleteButton = document.createElement('button');
             deleteButton.classList.add('action-button');
             deleteButton.innerHTML = `<span class="material-symbols-outlined">delete</span>`;
@@ -1016,19 +1163,21 @@
         }
         
         const consumo = leituraAtual - leituraAnterior;
+        const valorTotal = consumo * VALOR_M3;
 
         const cliente = clientes.find(c => c.id === id);
         if (cliente) {
             cliente.leituraAtual = leituraAtual;
             cliente.leituraAnterior = leituraAnterior;
             cliente.consumo = consumo;
+            cliente.valorTotal = valorTotal;
             salvarDados({ clientes, usuario: registeredUser, idCounter: clienteIdCounter });
         } else {
             Swal.fire('Cliente não encontrado', 'O ID do cliente não foi encontrado. Por favor, verifique o histórico.', 'error');
             return;
         }
 
-        document.getElementById('resultado-consumo').innerHTML = `Consumo calculado: ${consumo.toFixed(2)} m³`;
+        document.getElementById('resultado-consumo').innerHTML = `Consumo calculado: ${consumo.toFixed(2)} m³ <br> Valor Total: R$ ${valorTotal.toFixed(2)}`;
         Swal.fire('Cálculo Concluído', `O consumo do cliente foi calculado em ${consumo.toFixed(2)} m³.`, 'success');
         this.reset();
         document.getElementById('cliente-info').classList.add('hidden');
@@ -1038,12 +1187,41 @@
     function atualizarGraficos() {
         const consumos = { residencial: 0, comercial: 0, industrial: 0 };
         const statusCounts = { ativo: 0, inativo: 0, suspenso: 0 };
+        const tipoServicoCounts = { residencial: 0, comercial: 0, industrial: 0 };
 
         clientes.forEach(cliente => {
             if (cliente.consumo) {
                 consumos[cliente.tipoServico] += cliente.consumo;
             }
             statusCounts[cliente.statusServico]++;
+            tipoServicoCounts[cliente.tipoServico]++;
+        });
+
+        const ctxTipo = document.getElementById('grafico-tipo-servico').getContext('2d');
+        if (graficoTipoServico) {
+            graficoTipoServico.destroy();
+        }
+        graficoTipoServico = new Chart(ctxTipo, {
+            type: 'pie',
+            data: {
+                labels: ['Residencial', 'Comercial', 'Industrial'],
+                datasets: [{
+                    label: 'Clientes por Tipo de Serviço',
+                    data: [tipoServicoCounts.residencial, tipoServicoCounts.comercial, tipoServicoCounts.industrial],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: { responsive: true }
         });
         
         const ctxBar = document.getElementById('grafico-consumo').getContext('2d');
