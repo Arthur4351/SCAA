@@ -6,15 +6,31 @@
     <title>SCAA</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9J0kL5F6w+8X3R6j4L5b4r6e6c6t1G9w6F4e8G6a1e3B3o3+3s3u3v3w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
+        :root {
+            --primary-color: #ff9100;
+            --secondary-color: #007bff;
+            --background-dark: #1a202c;
+            --text-light: #f0f4f8;
+            --card-bg: rgba(0, 0, 0, 0.4);
+        }
+
+        @keyframes bg-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-image: url('logo.png');
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            color: #ffffff;
+            background-position: center;
+            color: var(--text-light);
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -23,23 +39,12 @@
             align-items: center;
             flex-direction: column;
             text-align: center;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: #fff;
-            padding: 20px 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.5s ease-in-out;
         }
 
         .header {
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             padding-bottom: 0;
-            border: none;
             max-width: 400px;
             width: 100%;
             display: flex;
@@ -49,23 +54,31 @@
         .header img {
             max-width: 100%;
             height: auto;
+            animation: fadeIn 1s ease-in;
         }
 
-        .login-form {
-            background-color: rgba(255, 255, 255, 0.2);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-form, .register-form {
+            background-color: var(--card-bg);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.3);
             padding: 40px;
             border-radius: 15px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
             max-width: 400px;
             width: 90%;
+            transition: all 0.3s ease-in-out;
+            animation: fadeIn 0.8s ease-in;
         }
 
-        .login-form h2 {
-            color: #fff;
+        .login-form h2, .register-form h2 {
+            color: var(--text-light);
             margin-top: 0;
-            border: none;
+            border-bottom: 2px solid var(--primary-color);
             padding-bottom: 10px;
         }
 
@@ -77,7 +90,7 @@
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
-            color: #fff;
+            color: var(--text-light);
             text-align: left;
         }
 
@@ -86,28 +99,31 @@
             width: 100%;
             padding: 12px;
             box-sizing: border-box;
-            border: 1px solid rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 8px;
-            background-color: rgba(255, 255, 255, 0.9);
-            color: #333;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            transition: all 0.3s ease;
         }
 
         .form-group input::placeholder {
-            color: #aaa;
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #ff9100;
+            border-color: var(--primary-color);
             box-shadow: 0 0 8px rgba(255, 145, 0, 0.5);
         }
 
         .btn {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
             padding: 12px;
-            background-color: #ff9100;
+            background-color: var(--primary-color);
             color: #fff;
             border: none;
             border-radius: 8px;
@@ -115,69 +131,116 @@
             font-size: 16px;
             font-weight: bold;
             margin-top: 20px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .btn:hover {
             background-color: #ffb84d;
+            transform: translateY(-2px);
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn-link {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: none;
+            text-align: center;
+            margin-top: 10px;
+            padding: 0;
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .btn-link:hover {
+            color: #ffb84d;
+            text-decoration: underline;
         }
 
         .hidden {
             display: none;
         }
 
-        /* Estilos do menu principal e seções */
-        .main-menu {
-            border: 1px solid #ccc;
-            padding: 20px;
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 20px 30px;
             border-radius: 8px;
-            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: var(--text-light);
+            animation: fadeIn 0.8s ease-in;
         }
 
-        h2 {
-            border-bottom: 2px solid #007bff;
+        .main-menu h2 {
+            color: var(--text-light);
+            border-bottom: 2px solid var(--primary-color);
             padding-bottom: 5px;
             margin-top: 30px;
-            color: #007bff;
         }
 
-        nav ul {
+        .main-menu nav ul {
             list-style-type: none;
             padding: 0;
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             flex-wrap: wrap;
+            margin-bottom: 20px;
         }
 
-        nav li {
+        .main-menu nav li {
             margin: 5px;
         }
 
-        nav a {
+        .main-menu nav a {
             display: block;
             padding: 10px 15px;
-            background-color: #f0f0f0;
-            color: #007bff;
+            background-color: var(--primary-color);
+            color: #fff;
             text-decoration: none;
             border-radius: 5px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--primary-color);
+            transition: all 0.3s ease;
         }
 
-        nav a:hover {
-            background-color: #e0e0e0;
+        .main-menu nav a:hover {
+            background-color: #ffb84d;
+            color: #fff;
         }
 
         .section-content {
-            background: #f9f9f9;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             padding: 20px;
             border-radius: 8px;
             margin-top: 15px;
-            color: #333;
+            color: var(--text-light);
+
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out;
+            position: relative; /* Adicionado para ser a base do botão fixo */
         }
 
-        /* Responsividade da tabela */
-        .table-responsive {
-            overflow-x: auto;
+        .section-content.active {
+            opacity: 1;
+            max-height: 1000px;
+            overflow: visible;
+        }
+
+        .section-content h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+            margin-top: 0;
+            margin-bottom: 15px;
         }
 
         table {
@@ -187,43 +250,92 @@
         }
 
         table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 12px;
             text-align: left;
         }
 
         th {
-            background-color: #007bff;
+            background-color: var(--secondary-color);
             color: white;
         }
 
-        /* Media Queries para dispositivos móveis */
-        @media (max-width: 768px) {
-            .header img {
-                max-height: 40px;
-            }
+        .section-content input, .section-content select {
+            color: #333;
+        }
 
-            .login-form {
-                padding: 20px;
-                width: 90%;
-            }
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
 
-            .container {
-                padding: 10px;
-                width: 90%;
-            }
+        .status-ativo { background-color: green; }
+        .status-inativo { background-color: orange; }
+        .status-suspenso { background-color: red; }
 
-            nav ul {
-                flex-direction: column;
-            }
+        .historico-row {
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
 
-            nav li {
-                width: 100%;
-                margin-bottom: 5px;
-            }
+        .historico-row:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .action-button-container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 10;
+        }
+
+        .historico-row:hover .action-button-container {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .action-button-container button {
+            background: none;
+            border: none;
+            color: #d33;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .action-button-container button:hover {
+            color: red;
+        }
+
+        /* Novo estilo para o botão fixo */
+        .fixed-add-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .fixed-add-btn:hover {
+            background-color: #ffb84d;
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -244,7 +356,24 @@
             <label for="password">Senha:</label>
             <input type="password" id="password" name="password" required>
         </div>
-        <button type="submit" class="btn">Entrar</button>
+        <button type="submit" class="btn"><i class="fas fa-sign-in-alt"></i>Entrar</button>
+        <button type="button" class="btn-link" id="show-register-btn">Ainda não sou cadastrado</button>
+    </form>
+</div>
+
+<div id="register-user-section" class="register-form hidden">
+    <h2>Cadastro de Usuário</h2>
+    <form id="register-user-form">
+        <div class="form-group">
+            <label for="register-username">Novo Usuário:</label>
+            <input type="text" id="register-username" name="register-username" required>
+        </div>
+        <div class="form-group">
+            <label for="register-password">Nova Senha:</label>
+            <input type="password" id="register-password" name="register-password" required>
+        </div>
+        <button type="submit" class="btn"><i class="fas fa-save"></i>Salvar</button>
+        <button type="button" class="btn-link" id="back-to-login-btn">Voltar para o Login</button>
     </form>
 </div>
 
@@ -259,9 +388,9 @@
             <li><a href="#graficos-section">Gráficos</a></li>
         </ul>
     </nav>
-    <button id="logout-btn" class="btn">Sair</button>
+    <button id="logout-btn" class="btn"><i class="fas fa-sign-out-alt"></i>Sair</button>
 
-    <div id="cadastro-cliente-section" class="section-content hidden">
+    <div id="cadastro-cliente-section" class="section-content">
         <h2>Cadastro de Clientes</h2>
         <form id="cadastro-cliente-form">
             <div class="form-group">
@@ -297,7 +426,7 @@
         </form>
     </div>
 
-    <div id="consumo-section" class="section-content hidden">
+    <div id="consumo-section" class="section-content">
         <h2>Cálculo de Consumo</h2>
         <form id="calculo-consumo-form">
             <div class="form-group">
@@ -317,7 +446,7 @@
         <div id="resultado-consumo" style="margin-top: 15px; font-weight: bold;"></div>
     </div>
 
-    <div id="relatorios-section" class="section-content hidden">
+    <div id="relatorios-section" class="section-content">
         <h2>Relatórios</h2>
         <form id="relatorio-form">
             <div class="form-group">
@@ -333,8 +462,9 @@
             </div>
     </div>
 
-    <div id="historico-section" class="section-content hidden">
+    <div id="historico-section" class="section-content">
         <h2>Histórico de Clientes</h2>
+        <button class="fixed-add-btn" onclick="showCadastroCliente()"><i class="fas fa-plus"></i> Adicionar Cliente</button>
         <div class="table-responsive">
             <table id="historico-tabela">
                 <thead>
@@ -353,7 +483,7 @@
         </div>
     </div>
 
-    <div id="graficos-section" class="section-content hidden">
+    <div id="graficos-section" class="section-content">
         <h2>Gráficos de Consumo</h2>
         <p>Aqui seriam exibidos gráficos interativos (por exemplo, usando bibliotecas como Chart.js).</p>
         <canvas id="grafico-consumo" width="400" height="200" style="background: #fff; border: 1px solid #ccc;"></canvas>
@@ -361,13 +491,68 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
-    // Armazenamento simples de clientes em um array para simulação
-    const clientes = [];
-    let clienteIdCounter = 1;
+    // --- Funções de localStorage para gerenciar dados ---
+    function carregarDados() {
+        const clientesSalvos = JSON.parse(localStorage.getItem('clientes')) || [];
+        const usuarioSalvo = JSON.parse(localStorage.getItem('registeredUser')) || null;
+        const idCounterSalvo = parseInt(localStorage.getItem('clienteIdCounter')) || 1;
+        return { clientes: clientesSalvos, usuario: usuarioSalvo, idCounter: idCounterSalvo };
+    }
 
-    // --- Lógica de Login com SweetAlert2 ---
+    function salvarClientes(clientes) {
+        localStorage.setItem('clientes', JSON.stringify(clientes));
+    }
+
+    function salvarUsuario(usuario) {
+        localStorage.setItem('registeredUser', JSON.stringify(usuario));
+    }
+
+    function salvarIdCounter(id) {
+        localStorage.setItem('clienteIdCounter', id);
+    }
+
+    let { clientes, usuario: registeredUser, idCounter: clienteIdCounter } = carregarDados();
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const firstSection = document.getElementById('cadastro-cliente-section');
+        if (firstSection) {
+            firstSection.classList.add('active');
+        }
+    });
+
+    document.getElementById('show-register-btn').addEventListener('click', function() {
+        document.getElementById('login').classList.add('hidden');
+        document.getElementById('register-user-section').classList.remove('hidden');
+    });
+
+    document.getElementById('back-to-login-btn').addEventListener('click', function() {
+        document.getElementById('register-user-section').classList.add('hidden');
+        document.getElementById('login').classList.remove('hidden');
+    });
+
+    document.getElementById('register-user-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('register-username').value;
+        const password = document.getElementById('register-password').value;
+
+        registeredUser = { username, password };
+        salvarUsuario(registeredUser);
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Usuário Cadastrado!',
+            text: 'Agora você pode fazer login com seu novo usuário.',
+            showConfirmButton: false,
+            timer: 2500
+        }).then(() => {
+            document.getElementById('register-user-section').classList.add('hidden');
+            document.getElementById('login').classList.remove('hidden');
+            document.getElementById('username').value = username;
+            document.getElementById('password').value = '';
+        });
+    });
+
     document.getElementById('login-form').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -377,7 +562,9 @@
         const correctUsername = "admin";
         const correctPassword = "1234";
 
-        if (usernameInput === correctUsername && passwordInput === correctPassword) {
+        const userToCheck = registeredUser || { username: correctUsername, password: correctPassword };
+
+        if (usernameInput === userToCheck.username && passwordInput === userToCheck.password) {
             Swal.fire({
                 icon: 'success',
                 title: 'Login realizado com sucesso!',
@@ -387,7 +574,10 @@
             }).then(() => {
                 document.getElementById('login').classList.add('hidden');
                 document.getElementById('main-content').classList.remove('hidden');
-                document.getElementById('cadastro-cliente-section').classList.remove('hidden');
+                const firstSection = document.getElementById('cadastro-cliente-section');
+                if (firstSection) {
+                    firstSection.classList.add('active');
+                }
             });
         } else {
             Swal.fire({
@@ -398,22 +588,71 @@
         }
     });
 
-    // Função para renderizar a tabela de clientes
     function renderizarHistorico() {
         const tbody = document.querySelector('#historico-tabela tbody');
         tbody.innerHTML = '';
         clientes.forEach(cliente => {
             const row = tbody.insertRow();
+            row.classList.add('historico-row');
+
             row.insertCell(0).textContent = cliente.id;
-            row.insertCell(1).textContent = cliente.nome;
+            
+            const nomeCell = row.insertCell(1);
+            nomeCell.textContent = cliente.nome;
+            nomeCell.style.position = 'relative';
+
             row.insertCell(2).textContent = cliente.cpf;
             row.insertCell(3).textContent = cliente.endereco;
             row.insertCell(4).textContent = cliente.tipoServico;
-            row.insertCell(5).textContent = cliente.statusServico;
+
+            const statusCell = row.insertCell(5);
+            const statusIndicator = document.createElement('span');
+            statusIndicator.classList.add('status-indicator');
+            if (cliente.statusServico === 'ativo') {
+                statusIndicator.classList.add('status-ativo');
+            } else if (cliente.statusServico === 'inativo') {
+                statusIndicator.classList.add('status-inativo');
+            } else if (cliente.statusServico === 'suspenso') {
+                statusIndicator.classList.add('status-suspenso');
+            }
+            const statusText = document.createElement('span');
+            statusText.textContent = cliente.statusServico;
+            statusCell.appendChild(statusIndicator);
+            statusCell.appendChild(statusText);
+
+            const actionButtonContainer = document.createElement('div');
+            actionButtonContainer.classList.add('action-button-container');
+            actionButtonContainer.innerHTML = `
+                <button onclick="excluirCliente(${cliente.id})"><i class="fas fa-trash-alt"></i></button>
+            `;
+            nomeCell.appendChild(actionButtonContainer);
+        });
+    }
+    
+    function excluirCliente(id) {
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: "Você não poderá reverter isso!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sim, excluir!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                clientes = clientes.filter(cliente => cliente.id !== id);
+                salvarClientes(clientes);
+                renderizarHistorico();
+                Swal.fire(
+                    'Excluído!',
+                    `O cliente com ID ${id} foi excluído.`,
+                    'success'
+                );
+            }
         });
     }
 
-    // --- Ações dos formulários com SweetAlert2 ---
     document.getElementById('cadastro-cliente-form').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -433,7 +672,7 @@
         }
 
         const novoCliente = {
-            id: clienteIdCounter++,
+            id: clienteIdCounter,
             nome,
             cpf,
             endereco,
@@ -442,6 +681,10 @@
         };
 
         clientes.push(novoCliente);
+        clienteIdCounter++;
+
+        salvarClientes(clientes);
+        salvarIdCounter(clienteIdCounter);
 
         Swal.fire({
             icon: 'success',
@@ -450,8 +693,7 @@
             showConfirmButton: false,
             timer: 2500
         }).then(() => {
-            document.querySelectorAll('.section-content').forEach(section => section.classList.add('hidden'));
-            document.getElementById('historico-section').classList.remove('hidden');
+            showSection('historico-section'); // Altera para a nova função
             renderizarHistorico();
             this.reset();
         });
@@ -480,7 +722,6 @@
         );
     });
 
-    // Script para controlar a visibilidade das seções
     document.getElementById('logout-btn').addEventListener('click', function() {
         Swal.fire({
             title: 'Tem certeza?',
@@ -495,7 +736,9 @@
                 document.getElementById('main-content').classList.add('hidden');
                 document.getElementById('login').classList.remove('hidden');
                 const sections = document.querySelectorAll('.section-content');
-                sections.forEach(section => section.classList.add('hidden'));
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
                 Swal.fire(
                     'Desconectado!',
                     'Você foi desconectado com sucesso.',
@@ -505,13 +748,31 @@
         });
     });
 
+    // Nova função para mostrar a seção de cadastro
+    function showCadastroCliente() {
+        showSection('cadastro-cliente-section');
+    }
+
+    // Função genérica para mudar de seção, usada pelos botões de navegação e pelo novo botão de Adicionar
+    function showSection(sectionId) {
+        const currentActive = document.querySelector('.section-content.active');
+        if (currentActive) {
+            currentActive.classList.remove('active');
+        }
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+            targetSection.classList.add('active');
+        }
+    }
+
     document.querySelectorAll('nav a').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            const sections = document.querySelectorAll('.section-content');
-            sections.forEach(section => section.classList.add('hidden'));
             const targetId = this.getAttribute('href').substring(1);
-            document.getElementById(targetId).classList.remove('hidden');
+            showSection(targetId);
+            if(targetId === 'historico-section'){
+                renderizarHistorico();
+            }
         });
     });
 </script>
