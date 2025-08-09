@@ -6,7 +6,7 @@
     <title>SCAA</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9J0kL5F6w+8X3R6j4L5b4r6e6c6t1G9w6F4e8G6a1e3B3o3+3s3u3v3w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     
     <style>
         /* Estilos globais e de layout */
@@ -21,8 +21,8 @@
             padding: 0;
             height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: flex-start; /* Alinha o conteúdo no topo */
+            align-items: center; /* Centraliza o conteúdo horizontalmente */
             flex-direction: column;
             text-align: center;
             overflow-y: auto;
@@ -30,7 +30,7 @@
         }
         .container {
             max-width: 950px;
-            margin: 20px auto;
+            margin: 10px auto;
             background-color: rgba(38, 50, 56, 0.6);
             backdrop-filter: blur(15px);
             border-radius: 12px;
@@ -41,7 +41,7 @@
         .header {
             color: #80deea;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-            margin-bottom: 30px;
+            margin: 10px auto; /* ALINHAMENTO: centralizado com margem */
             max-width: 450px;
             width: 100%;
             display: flex;
@@ -72,6 +72,7 @@
             width: 90%;
             transition: all 0.3s ease-in-out;
             animation: fadeInUp 0.6s ease-out;
+            margin: 20px auto; /* ALINHAMENTO: centralizado com margem */
         }
         @keyframes fadeInUp {
             from {
@@ -165,7 +166,7 @@
         /* Estilos do menu principal e seções de conteúdo */
         .main-menu {
             border-radius: 12px;
-            margin-top: 30px;
+            margin-top: 10px;
             background-color: rgba(38, 50, 56, 0.6);
             backdrop-filter: blur(15px);
             padding: 15px;
@@ -283,7 +284,6 @@
             padding: 10px;
             background-color: rgba(255, 255, 255, 0.1);
             color: #80deea;
-            /* Alterado para 50% para botões redondos */
             border-radius: 50%;
             text-decoration: none;
             font-weight: bold;
@@ -301,15 +301,15 @@
             background-color: #ffca28;
             color: #263238;
         }
-        .main-options .option-btn.active svg, .main-options .option-btn.active i {
+        .main-options .option-btn.active .material-symbols-outlined {
             color: #263238 !important;
         }
-        .main-options .option-btn i {
+        .main-options .option-btn .material-symbols-outlined {
             font-size: 1.8em;
             margin-bottom: 0;
             transition: color 0.3s ease;
         }
-        .main-options .option-btn span {
+        .main-options .option-btn span:not(.material-symbols-outlined) {
             display: none;
         }
 
@@ -342,6 +342,9 @@
             transition: background-color 0.3s ease, transform 0.2s ease-out;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
             font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         .logout-container .logout-btn-styled:hover {
             background-color: #c62828;
@@ -374,9 +377,6 @@
         .status-inativo { background-color: #ffa000; }
         .status-suspenso { background-color: #e53935; }
         .fixed-add-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
             background-color: #4caf50;
             color: #fff;
             border: none;
@@ -389,8 +389,9 @@
             gap: 5px;
             box-shadow: 0 2px 3px rgba(0,0,0,0.15);
             transition: all 0.3s ease, transform 0.2s ease-out;
-            z-index: 10;
             font-size: 0.9em;
+            margin: 10px 0;
+            align-self: center; /* Centraliza o botão dentro do flex container */
         }
         .fixed-add-btn:hover {
             background-color: #66bb6a;
@@ -442,7 +443,7 @@
             padding: 10px;
             background-color: rgba(38, 50, 56, 0.6);
             border-radius: 12px;
-            margin-top: 15px;
+            margin-top: 10px;
         }
         
         .main-options {
@@ -481,11 +482,12 @@
                 margin: 10px;
             }
             .header {
-                margin-bottom: 15px;
+                margin: 10px auto; /* Mantém o alinhamento para mobile */
             }
             .login-form, .register-form {
                 padding: 25px;
                 width: 98%;
+                margin: 20px auto; /* Mantém o alinhamento para mobile */
             }
             .main-options {
                 gap: 10px;
@@ -497,10 +499,9 @@
                 height: 45px;
                 padding: 8px;
                 font-size: 1em;
-                /* Alterado para 50% para botões redondos */
                 border-radius: 50%;
             }
-            .main-options .option-btn i {
+            .main-options .option-btn .material-symbols-outlined {
                 font-size: 1.5em;
                 margin-bottom: 0;
             }
@@ -534,7 +535,7 @@
 </div>
 
 <div id="logout-container" class="logout-container hidden">
-    <a href="#" id="logout-btn" class="logout-btn-styled"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    <a href="#" id="logout-btn" class="logout-btn-styled"><span class="material-symbols-outlined">logout</span> Sair</a>
 </div>
 
 <div id="login" class="login-form">
@@ -573,25 +574,26 @@
 <div id="main-content" class="container main-menu hidden">
     <div class="main-options">
         <a href="#cadastro-cliente-section" class="option-btn" title="Cadastro">
-            <i class="fas fa-user-plus"></i>
+            <span class="material-symbols-outlined">person_add</span>
             <span>Cadastro</span>
         </a>
         <a href="#consumo-section" class="option-btn" title="Consumo">
-            <i class="fas fa-tachometer-alt"></i>
+            <span class="material-symbols-outlined">speed</span>
             <span>Consumo</span>
         </a>
         <a href="#historico-section" class="option-btn active" title="Histórico">
-            <i class="fas fa-history"></i>
+            <span class="material-symbols-outlined">history</span>
             <span>Histórico</span>
         </a>
         <a href="#graficos-section" class="option-btn" title="Gráficos">
-            <i class="fas fa-chart-bar"></i>
+            <span class="material-symbols-outlined">bar_chart</span>
             <span>Gráficos</span>
         </a>
     </div>
     
     <h2>Menu Principal</h2>
-    
+    <button class="fixed-add-btn" onclick="showSection('cadastro-cliente-section')"><span class="material-symbols-outlined">person_add</span> Adicionar Cliente</button>
+
     <div id="cadastro-cliente-section" class="section-content">
         <h2>Cadastro de Clientes</h2>
         <form id="cadastro-cliente-form">
@@ -654,7 +656,6 @@
 
     <div id="historico-section" class="section-content active">
         <h2>Histórico de Clientes</h2>
-        <button class="fixed-add-btn" onclick="showSection('cadastro-cliente-section')"><i class="fas fa-user-plus"></i> Adicionar Cliente</button>
         <div class="table-responsive">
             <table id="historico-tabela">
                 <thead>
@@ -852,6 +853,13 @@
         if (sectionId === 'graficos-section') {
             atualizarGraficos();
         }
+        if (sectionId === 'cadastro-cliente-section') {
+            const cadastroLink = document.querySelector('.main-options a[href="#cadastro-cliente-section"]');
+            if (cadastroLink) {
+                document.querySelectorAll('.main-options a').forEach(item => item.classList.remove('active'));
+                cadastroLink.classList.add('active');
+            }
+        }
     }
 
     function renderizarHistorico() {
@@ -901,7 +909,7 @@
             const acoesCell = row.insertCell(6);
             const deleteButton = document.createElement('button');
             deleteButton.classList.add('action-button');
-            deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>`;
+            deleteButton.innerHTML = `<span class="material-symbols-outlined">delete</span>`;
             deleteButton.onclick = () => excluirCliente(cliente.id);
             acoesCell.appendChild(deleteButton);
         });
