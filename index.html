@@ -1,12 +1,12 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SCAA</title>
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,9 +14,7 @@
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            
-            /* Cor do texto ajustada para ser visível no fundo escuro */
-            color: #eee;
+            color: #ffffff;
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -38,16 +36,19 @@
 
         .header {
             color: #fff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             margin-bottom: 20px;
             padding-bottom: 0;
             border: none;
+            max-width: 400px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
-        .header h1 {
-            font-size: 2.5em;
-            margin: 0;
-            letter-spacing: 1px;
+        .header img {
+            width: 350px;
+            height: auto;
         }
 
         .login-form {
@@ -71,6 +72,7 @@
         .form-group {
             margin-bottom: 20px;
         }
+
         .form-group label {
             display: block;
             margin-bottom: 5px;
@@ -78,6 +80,7 @@
             color: #fff;
             text-align: left;
         }
+
         .form-group input {
             width: 100%;
             padding: 12px;
@@ -87,12 +90,14 @@
             background-color: rgba(255, 255, 255, 0.1);
             color: #000000;
         }
+
         .form-group input::placeholder {
             color: rgba(255, 255, 255, 0.7);
         }
+
         .form-group input:focus {
             outline: none;
-            border-color: #fff;
+            border-color: #ffffff;
             box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
         }
 
@@ -100,7 +105,7 @@
             display: block;
             width: 100%;
             padding: 12px;
-            background-color: #ff9100; /* Cor do botão alterada para um laranja mais vibrante */
+            background-color: #ff9100;
             color: #fff;
             border: none;
             border-radius: 8px;
@@ -110,6 +115,7 @@
             margin-top: 20px;
             transition: background-color 0.3s ease;
         }
+
         .btn:hover {
             background-color: #ffb84d;
         }
@@ -125,12 +131,14 @@
             border-radius: 8px;
             margin-top: 20px;
         }
+
         h2 {
             border-bottom: 2px solid #007bff;
             padding-bottom: 5px;
             margin-top: 30px;
             color: #007bff;
         }
+
         nav ul {
             list-style-type: none;
             padding: 0;
@@ -138,9 +146,11 @@
             justify-content: space-around;
             flex-wrap: wrap;
         }
+
         nav li {
             margin: 5px;
         }
+
         nav a {
             display: block;
             padding: 10px 15px;
@@ -150,31 +160,38 @@
             border-radius: 5px;
             border: 1px solid #ddd;
         }
+
         nav a:hover {
             background-color: #e0e0e0;
         }
+
         .section-content {
             background: #f9f9f9;
             padding: 20px;
             border-radius: 8px;
             margin-top: 15px;
         }
+
         /* Responsividade da tabela */
         .table-responsive {
             overflow-x: auto;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
         }
+
         table, th, td {
             border: 1px solid #ddd;
         }
+
         th, td {
             padding: 8px;
             text-align: left;
         }
+
         th {
             background-color: #007bff;
             color: white;
@@ -182,8 +199,8 @@
 
         /* Media Queries para dispositivos móveis */
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8em;
+            .header img {
+                max-height: 40px;
             }
 
             .login-form {
@@ -210,7 +227,7 @@
 <body>
 
 <div class="header">
-    <h1>SCAA</h1>
+    <img src="logo2.png" alt="Logo SCAA">
 </div>
 
 <div id="login" class="login-form">
@@ -347,7 +364,7 @@
     // --- Lógica de Login com SweetAlert2 ---
     document.getElementById('login-form').addEventListener('submit', function(e) {
         e.preventDefault();
-        
+
         const usernameInput = document.getElementById('username').value;
         const passwordInput = document.getElementById('password').value;
 
@@ -374,7 +391,7 @@
             });
         }
     });
-    
+
     // Script para controlar a visibilidade das seções
     document.getElementById('logout-btn').addEventListener('click', function() {
         Swal.fire({
@@ -428,7 +445,7 @@
         const leituraAnterior = document.getElementById('leitura-anterior').value;
         const consumo = leituraAtual - leituraAnterior;
         document.getElementById('resultado-consumo').innerHTML = `Consumo calculado: ${consumo} m³`;
-        
+
         Swal.fire(
             'Cálculo Concluído',
             `O consumo do cliente foi calculado em ${consumo} m³.`,
@@ -455,7 +472,7 @@
             <tr><td>2025-05-25</td><td>12 m³</td></tr>
         `;
         tabela.classList.remove('hidden');
-        
+
         Swal.fire(
             'Histórico Encontrado',
             'Os dados de histórico foram exibidos na tabela.',
