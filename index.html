@@ -7,30 +7,16 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9J0kL5F6w+8X3R6j4L5b4r6e6c6t1G9w6F4e8G6a1e3B3o3+3s3u3v3w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    
     <style>
-        :root {
-            --primary-color: #ff9100;
-            --secondary-color: #007bff;
-            --background-dark: #1a202c;
-            --text-light: #f0f4f8;
-            --card-bg: rgba(0, 0, 0, 0.4);
-        }
-
-        @keyframes bg-animation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
+        /* Estilos globais e de layout */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-image: url('logo.png');
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            background-position: center;
-            color: var(--text-light);
+            color: #e0f7fa;
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -39,303 +25,505 @@
             align-items: center;
             flex-direction: column;
             text-align: center;
-            transition: opacity 0.5s ease-in-out;
+            overflow-y: auto;
+            transition: background-color 0.3s ease;
         }
-
+        .container {
+            max-width: 950px;
+            margin: 20px auto;
+            background-color: rgba(38, 50, 56, 0.6);
+            backdrop-filter: blur(15px);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            padding: 30px 40px;
+            position: relative;
+        }
         .header {
+            color: #80deea;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
             margin-bottom: 30px;
-            padding-bottom: 0;
-            max-width: 400px;
+            max-width: 450px;
             width: 100%;
             display: flex;
             justify-content: center;
+            animation: fadeInDown 0.8s ease-out;
         }
-
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
         .header img {
             max-width: 100%;
             height: auto;
-            animation: fadeIn 1s ease-in;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .login-form, .register-form {
-            background-color: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 40px;
+            background-color: rgba(38, 50, 56, 0.7);
+            backdrop-filter: blur(15px);
             border-radius: 15px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            max-width: 400px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            padding: 40px;
+            max-width: 450px;
             width: 90%;
             transition: all 0.3s ease-in-out;
-            animation: fadeIn 0.8s ease-in;
+            animation: fadeInUp 0.6s ease-out;
         }
-
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
         .login-form h2, .register-form h2 {
-            color: var(--text-light);
+            color: #80deea;
             margin-top: 0;
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: var(--text-light);
+            border-bottom: 2px solid #80deea;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
             text-align: left;
         }
-
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #b2ebf2;
+            text-align: left;
+            transition: color 0.3s ease;
+        }
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             box-sizing: border-box;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 8px;
             background-color: rgba(255, 255, 255, 0.1);
-            color: var(--text-light);
-            transition: all 0.3s ease;
+            color: #fff;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
         }
-
         .form-group input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
+            color: #b0bec5;
         }
-
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 8px rgba(255, 145, 0, 0.5);
+            border-color: #ffca28;
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 202, 40, 0.5);
         }
-
         .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: block;
             width: 100%;
-            padding: 12px;
-            background-color: var(--primary-color);
-            color: #fff;
+            padding: 14px;
+            background-color: #ffca28;
+            color: #263238;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
-            margin-top: 20px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 25px;
+            transition: background-color 0.3s ease, transform 0.2s ease-out;
         }
-
         .btn:hover {
-            background-color: #ffb84d;
+            background-color: #ffeb3b;
             transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-
-        .btn i {
-            margin-right: 8px;
+        .hidden {
+            display: none !important;
         }
-
         .btn-link {
             background-color: transparent;
-            color: var(--primary-color);
+            color: #80deea;
             border: none;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 15px;
             padding: 0;
             cursor: pointer;
-            font-size: 14px;
-            transition: color 0.3s ease;
+            font-size: 15px;
+            transition: color 0.3s ease, text-decoration 0.3s ease;
         }
 
         .btn-link:hover {
-            color: #ffb84d;
+            color: #b2ebf2;
             text-decoration: underline;
         }
 
-        .hidden {
-            display: none;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 20px 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            color: var(--text-light);
-            animation: fadeIn 0.8s ease-in;
-        }
-
-        .main-menu h2 {
-            color: var(--text-light);
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 5px;
+        /* Estilos do menu principal e seções de conteúdo */
+        .main-menu {
+            border-radius: 12px;
             margin-top: 30px;
+            background-color: rgba(38, 50, 56, 0.6);
+            backdrop-filter: blur(15px);
+            padding: 15px;
+            animation: fadeIn 0.8s ease-out;
         }
-
-        .main-menu nav ul {
-            list-style-type: none;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
-
-        .main-menu nav li {
-            margin: 5px;
+        h2 {
+            border-bottom: 2px solid #ffca28;
+            padding-bottom: 10px;
+            margin-top: 25px;
+            color: #ffca28;
+            text-align: left;
+            font-size: 1.5em;
+            margin-bottom: 15px;
         }
-
-        .main-menu nav a {
-            display: block;
-            padding: 10px 15px;
-            background-color: var(--primary-color);
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            border: 1px solid var(--primary-color);
-            transition: all 0.3s ease;
-        }
-
-        .main-menu nav a:hover {
-            background-color: #ffb84d;
-            color: #fff;
-        }
-
         .section-content {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(55, 71, 79, 0.7);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 10px;
             margin-top: 15px;
-            color: var(--text-light);
-
+            color: #e0f7fa;
             opacity: 0;
             max-height: 0;
             overflow: hidden;
-            transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out;
-            position: relative; /* Adicionado para ser a base do botão fixo */
+            transition: opacity 0.4s ease-in-out, max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
         }
-
         .section-content.active {
             opacity: 1;
-            max-height: 1000px;
+            max-height: 2000px;
             overflow: visible;
+            padding: 20px;
         }
 
-        .section-content h2 {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 5px;
-            margin-top: 0;
-            margin-bottom: 15px;
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 8px;
+            margin-top: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
         }
-
-        table, th, td {
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 12px;
+        table thead th {
+            background-color: #455a64;
+            color: #b2ebf2;
+            font-weight: normal;
+            padding: 10px 12px;
             text-align: left;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            font-size: 0.9em;
+        }
+        table tbody tr {
+            transition: background-color 0.3s ease;
+            opacity: 0;
+            transform: translateY(5px);
+            animation: fadeInRow 0.3s ease-out forwards;
+            animation-delay: calc(0.03s * var(--row-index));
+        }
+        @keyframes fadeInRow {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        table tbody tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        table tbody td {
+            padding: 8px 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: left;
+            font-size: 0.9em;
+        }
+        table tbody td:last-child {
+            border-bottom: none;
+        }
+        
+        .historico-row.fade-out {
+            opacity: 0;
+            transform: scaleY(0.8);
+            max-height: 0;
+            padding: 0 !important;
+            transition: all 0.3s ease-out;
         }
 
-        th {
-            background-color: var(--secondary-color);
-            color: white;
+        /* Estilos para o menu de botões na página inicial */
+        .main-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            width: 100%;
+            padding: 10px 0;
+        }
+        .main-options .option-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #80deea;
+            /* Alterado para 50% para botões redondos */
+            border-radius: 50%;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease, transform 0.2s ease-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+        .main-options .option-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #b2ebf2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .main-options .option-btn.active {
+            background-color: #ffca28;
+            color: #263238;
+        }
+        .main-options .option-btn.active svg, .main-options .option-btn.active i {
+            color: #263238 !important;
+        }
+        .main-options .option-btn i {
+            font-size: 1.8em;
+            margin-bottom: 0;
+            transition: color 0.3s ease;
+        }
+        .main-options .option-btn span {
+            display: none;
         }
 
-        .section-content input, .section-content select {
-            color: #333;
+        /* Estilos para o botão de logout separado */
+        .logout-container {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            animation: slideInRight 0.5s ease-out;
         }
-
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .logout-container .logout-btn-styled {
+            background-color: #e53935;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease-out;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+            font-size: 0.9em;
+        }
+        .logout-container .logout-btn-styled:hover {
+            background-color: #c62828;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .action-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #e53935;
+            opacity: 0.8;
+            transition: color 0.3s ease, opacity 0.3s ease;
+            padding: 5px;
+        }
+        .action-button:hover {
+            color: #d32f2f;
+            opacity: 1;
+        }
         .status-indicator {
             display: inline-block;
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            margin-right: 8px;
+            margin-right: 5px;
+            box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
         }
-
-        .status-ativo { background-color: green; }
-        .status-inativo { background-color: orange; }
-        .status-suspenso { background-color: red; }
-
-        .historico-row {
-            position: relative;
-            transition: background-color 0.3s ease;
-        }
-
-        .historico-row:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .action-button-container {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            z-index: 10;
-        }
-
-        .historico-row:hover .action-button-container {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .action-button-container button {
-            background: none;
-            border: none;
-            color: #d33;
-            cursor: pointer;
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
-        }
-
-        .action-button-container button:hover {
-            color: red;
-        }
-
-        /* Novo estilo para o botão fixo */
+        .status-ativo { background-color: #43a047; }
+        .status-inativo { background-color: #ffa000; }
+        .status-suspenso { background-color: #e53935; }
         .fixed-add-btn {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: var(--primary-color);
+            top: 15px;
+            right: 15px;
+            background-color: #4caf50;
             color: #fff;
             border: none;
-            padding: 10px 20px;
+            padding: 8px 12px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
+            gap: 5px;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.15);
+            transition: all 0.3s ease, transform 0.2s ease-out;
+            z-index: 10;
+            font-size: 0.9em;
+        }
+        .fixed-add-btn:hover {
+            background-color: #66bb6a;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+        }
+        .customer-info {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideInLeft 0.4s ease-out;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .customer-info p {
+            margin-bottom: 6px;
+            color: #bbdefb;
+        }
+        .customer-info p:last-child {
+            margin-bottom: 0;
+        }
+        
+        #graficos-section canvas {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
-        .fixed-add-btn:hover {
-            background-color: #ffb84d;
-            transform: translateY(-2px);
+        /* NOVO CSS PARA MELHORAR A NAVEGAÇÃO */
+        .main-menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding: 10px;
+            background-color: rgba(38, 50, 56, 0.6);
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+        
+        .main-options {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: rgba(38, 50, 56, 0.9);
+            width: 95%;
+            max-width: 700px;
+            padding: 8px 0;
+            border-radius: 8px;
+            border-bottom: none;
+            margin-bottom: 10px;
+        }
+        
+        .section-content.active {
+            opacity: 1;
+            max-height: 2000px;
+            overflow: visible;
+            padding: 20px;
+            transition: opacity 0.4s ease-in-out, max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+            border-radius: 8px;
+            background: rgba(55, 71, 79, 0.6);
+        }
+        
+        #graficos-section.active {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        /* Responsividade geral */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 10px;
+            }
+            .header {
+                margin-bottom: 15px;
+            }
+            .login-form, .register-form {
+                padding: 25px;
+                width: 98%;
+            }
+            .main-options {
+                gap: 10px;
+                margin-bottom: 15px;
+                padding: 5px 0;
+            }
+            .main-options .option-btn {
+                width: 45px;
+                height: 45px;
+                padding: 8px;
+                font-size: 1em;
+                /* Alterado para 50% para botões redondos */
+                border-radius: 50%;
+            }
+            .main-options .option-btn i {
+                font-size: 1.5em;
+                margin-bottom: 0;
+            }
+            h2 {
+                margin-top: 20px;
+                padding-bottom: 6px;
+                font-size: 1.3em;
+                margin-bottom: 10px;
+            }
+            .section-content {
+                padding: 15px;
+                margin-top: 10px;
+            }
+            .fixed-add-btn, .logout-container .logout-btn-styled {
+                padding: 6px 10px;
+                font-size: 0.8em;
+                top: 10px;
+                right: 10px;
+            }
+            table thead th, table tbody td {
+                padding: 6px 8px;
+                font-size: 0.8em;
+            }
         }
     </style>
 </head>
@@ -343,6 +531,10 @@
 
 <div class="header">
     <img src="logo2.png" alt="Logo SCAA">
+</div>
+
+<div id="logout-container" class="logout-container hidden">
+    <a href="#" id="logout-btn" class="logout-btn-styled"><i class="fas fa-sign-out-alt"></i> Sair</a>
 </div>
 
 <div id="login" class="login-form">
@@ -356,7 +548,7 @@
             <label for="password">Senha:</label>
             <input type="password" id="password" name="password" required>
         </div>
-        <button type="submit" class="btn"><i class="fas fa-sign-in-alt"></i>Entrar</button>
+        <button type="submit" class="btn">Entrar</button>
         <button type="button" class="btn-link" id="show-register-btn">Ainda não sou cadastrado</button>
     </form>
 </div>
@@ -372,24 +564,34 @@
             <label for="register-password">Nova Senha:</label>
             <input type="password" id="register-password" name="register-password" required>
         </div>
-        <button type="submit" class="btn"><i class="fas fa-save"></i>Salvar</button>
+        <button type="submit" class="btn">Salvar</button>
         <button type="button" class="btn-link" id="back-to-login-btn">Voltar para o Login</button>
     </form>
 </div>
 
-<div id="main-content" class="container main-menu hidden">
-    <h2>Menu Principal</h2>
-    <nav>
-        <ul>
-            <li><a href="#cadastro-cliente-section">Cadastro de Clientes</a></li>
-            <li><a href="#consumo-section">Consumo</a></li>
-            <li><a href="#relatorios-section">Relatórios</a></li>
-            <li><a href="#historico-section">Histórico</a></li>
-            <li><a href="#graficos-section">Gráficos</a></li>
-        </ul>
-    </nav>
-    <button id="logout-btn" class="btn"><i class="fas fa-sign-out-alt"></i>Sair</button>
 
+<div id="main-content" class="container main-menu hidden">
+    <div class="main-options">
+        <a href="#cadastro-cliente-section" class="option-btn" title="Cadastro">
+            <i class="fas fa-user-plus"></i>
+            <span>Cadastro</span>
+        </a>
+        <a href="#consumo-section" class="option-btn" title="Consumo">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Consumo</span>
+        </a>
+        <a href="#historico-section" class="option-btn active" title="Histórico">
+            <i class="fas fa-history"></i>
+            <span>Histórico</span>
+        </a>
+        <a href="#graficos-section" class="option-btn" title="Gráficos">
+            <i class="fas fa-chart-bar"></i>
+            <span>Gráficos</span>
+        </a>
+    </div>
+    
+    <h2>Menu Principal</h2>
+    
     <div id="cadastro-cliente-section" class="section-content">
         <h2>Cadastro de Clientes</h2>
         <form id="cadastro-cliente-form">
@@ -431,40 +633,28 @@
         <form id="calculo-consumo-form">
             <div class="form-group">
                 <label for="consumo-cliente-id">ID do Cliente:</label>
-                <input type="text" id="consumo-cliente-id" name="consumo-cliente-id" required>
+                <input type="text" id="consumo-cliente-id" name="consumo-cliente-id" placeholder="Digite o ID do cliente" required>
             </div>
-            <div class="form-group">
-                <label for="leitura-atual">Leitura Atual (m³):</label>
-                <input type="number" id="leitura-atual" name="leitura-atual" required>
+            <div id="cliente-info" class="customer-info hidden">
+                <p>Nome: <span id="cliente-nome"></span></p>
+                <p>Tipo de Serviço: <span id="cliente-tipo-servico"></span></p>
             </div>
             <div class="form-group">
                 <label for="leitura-anterior">Leitura Anterior (m³):</label>
-                <input type="number" id="leitura-anterior" name="leitura-anterior" required>
+                <input type="number" id="leitura-anterior" name="leitura-anterior" placeholder="Leitura anterior" required>
+            </div>
+            <div class="form-group">
+                <label for="leitura-atual">Leitura Atual (m³):</label>
+                <input type="number" id="leitura-atual" name="leitura-atual" placeholder="Leitura atual" required>
             </div>
             <button type="submit" class="btn">Calcular Consumo</button>
         </form>
         <div id="resultado-consumo" style="margin-top: 15px; font-weight: bold;"></div>
     </div>
 
-    <div id="relatorios-section" class="section-content">
-        <h2>Relatórios</h2>
-        <form id="relatorio-form">
-            <div class="form-group">
-                <label for="tipo-relatorio">Tipo de Relatório:</label>
-                <select id="tipo-relatorio" name="tipo-relatorio">
-                    <option value="semanal">Semanal</option>
-                    <option value="mensal">Mensal</option>
-                </select>
-            </div>
-            <button type="submit" class="btn">Gerar Relatório</button>
-        </form>
-        <div id="relatorio-output" style="margin-top: 15px;">
-            </div>
-    </div>
-
-    <div id="historico-section" class="section-content">
+    <div id="historico-section" class="section-content active">
         <h2>Histórico de Clientes</h2>
-        <button class="fixed-add-btn" onclick="showCadastroCliente()"><i class="fas fa-plus"></i> Adicionar Cliente</button>
+        <button class="fixed-add-btn" onclick="showSection('cadastro-cliente-section')"><i class="fas fa-user-plus"></i> Adicionar Cliente</button>
         <div class="table-responsive">
             <table id="historico-tabela">
                 <thead>
@@ -475,22 +665,34 @@
                         <th>Endereço</th>
                         <th>Tipo de Serviço</th>
                         <th>Status do Serviço</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    </tbody>
+                </tbody>
             </table>
         </div>
     </div>
 
     <div id="graficos-section" class="section-content">
-        <h2>Gráficos de Consumo</h2>
-        <p>Aqui seriam exibidos gráficos interativos (por exemplo, usando bibliotecas como Chart.js).</p>
-        <canvas id="grafico-consumo" width="400" height="200" style="background: #fff; border: 1px solid #ccc;"></canvas>
+        <h2>Dashboards</h2>
+        <p>Dados simulados para demonstração. Adicione clientes e calcule o consumo para ver os gráficos mudarem.</p>
+        
+        <div style="background: #fff; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+            <h3>Consumo por Tipo de Serviço (m³)</h3>
+            <canvas id="grafico-consumo"></canvas>
+        </div>
+        
+        <div style="background: #fff; padding: 10px; border-radius: 8px;">
+            <h3>Clientes por Status de Serviço</h3>
+            <canvas id="grafico-status-clientes"></canvas>
+        </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
 <script>
     // --- Funções de localStorage para gerenciar dados ---
     function carregarDados() {
@@ -500,25 +702,25 @@
         return { clientes: clientesSalvos, usuario: usuarioSalvo, idCounter: idCounterSalvo };
     }
 
-    function salvarClientes(clientes) {
-        localStorage.setItem('clientes', JSON.stringify(clientes));
+    function salvarDados(data) {
+        localStorage.setItem('clientes', JSON.stringify(data.clientes));
+        localStorage.setItem('registeredUser', JSON.stringify(data.usuario));
+        localStorage.setItem('clienteIdCounter', data.idCounter);
     }
-
-    function salvarUsuario(usuario) {
-        localStorage.setItem('registeredUser', JSON.stringify(usuario));
-    }
-
-    function salvarIdCounter(id) {
-        localStorage.setItem('clienteIdCounter', id);
-    }
-
+    
     let { clientes, usuario: registeredUser, idCounter: clienteIdCounter } = carregarDados();
+    let graficoConsumo = null;
+    let graficoStatusClientes = null;
 
     document.addEventListener('DOMContentLoaded', () => {
-        const firstSection = document.getElementById('cadastro-cliente-section');
-        if (firstSection) {
-            firstSection.classList.add('active');
-        }
+        showSection('historico-section');
+        document.querySelectorAll('.main-options a').forEach(link => {
+            if (link.getAttribute('href') === '#historico-section') {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
     });
 
     document.getElementById('show-register-btn').addEventListener('click', function() {
@@ -529,6 +731,8 @@
     document.getElementById('back-to-login-btn').addEventListener('click', function() {
         document.getElementById('register-user-section').classList.add('hidden');
         document.getElementById('login').classList.remove('hidden');
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
     });
 
     document.getElementById('register-user-form').addEventListener('submit', function(e) {
@@ -536,8 +740,19 @@
         const username = document.getElementById('register-username').value;
         const password = document.getElementById('register-password').value;
 
+        if (registeredUser) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Usuário já existe!',
+                text: 'Já existe um usuário cadastrado. Você pode apenas fazer login.',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            return;
+        }
+
         registeredUser = { username, password };
-        salvarUsuario(registeredUser);
+        salvarDados({ clientes, usuario: registeredUser, idCounter: clienteIdCounter });
 
         Swal.fire({
             icon: 'success',
@@ -555,12 +770,11 @@
 
     document.getElementById('login-form').addEventListener('submit', function(e) {
         e.preventDefault();
-
         const usernameInput = document.getElementById('username').value;
         const passwordInput = document.getElementById('password').value;
 
         const correctUsername = "admin";
-        const correctPassword = "1234";
+        const correctPassword = "123";
 
         const userToCheck = registeredUser || { username: correctUsername, password: correctPassword };
 
@@ -568,16 +782,13 @@
             Swal.fire({
                 icon: 'success',
                 title: 'Login realizado com sucesso!',
-                text: 'Redirecionando...',
                 showConfirmButton: false,
-                timer: 2000
+                timer: 1500
             }).then(() => {
                 document.getElementById('login').classList.add('hidden');
                 document.getElementById('main-content').classList.remove('hidden');
-                const firstSection = document.getElementById('cadastro-cliente-section');
-                if (firstSection) {
-                    firstSection.classList.add('active');
-                }
+                document.getElementById('logout-container').classList.remove('hidden');
+                showSection('historico-section');
             });
         } else {
             Swal.fire({
@@ -588,24 +799,91 @@
         }
     });
 
+    document.getElementById('logout-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: "Você será desconectado da sua sessão.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, sair!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('main-content').classList.add('hidden');
+                document.getElementById('login').classList.remove('hidden');
+                document.getElementById('logout-container').classList.add('hidden');
+                document.querySelectorAll('.section-content').forEach(section => section.classList.remove('active'));
+                Swal.fire(
+                    'Desconectado!',
+                    'Você foi desconectado com sucesso.',
+                    'success'
+                );
+            }
+        });
+    });
+
+    document.querySelectorAll('.main-options a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            const targetId = href.substring(1);
+            showSection(targetId);
+
+            const allLinks = document.querySelectorAll('.main-options a');
+            allLinks.forEach(item => {
+                item.classList.remove('active');
+            });
+            this.classList.add('active');
+        });
+    });
+
+    function showSection(sectionId) {
+        const sections = document.querySelectorAll('.section-content');
+        sections.forEach(section => section.classList.remove('active'));
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+            targetSection.classList.add('active');
+        }
+        if (sectionId === 'historico-section') {
+            renderizarHistorico();
+        }
+        if (sectionId === 'graficos-section') {
+            atualizarGraficos();
+        }
+    }
+
     function renderizarHistorico() {
         const tbody = document.querySelector('#historico-tabela tbody');
         tbody.innerHTML = '';
-        clientes.forEach(cliente => {
+        if (clientes.length === 0) {
+            const row = tbody.insertRow();
+            const cell = row.insertCell(0);
+            cell.colSpan = 7;
+            cell.textContent = "Nenhum cliente cadastrado.";
+            cell.style.textAlign = "center";
+            cell.style.color = "#ccc";
+            return;
+        }
+
+        clientes.forEach((cliente, index) => {
             const row = tbody.insertRow();
             row.classList.add('historico-row');
+            row.style.setProperty('--row-index', index);
+            row.setAttribute('data-id', cliente.id);
 
             row.insertCell(0).textContent = cliente.id;
-            
-            const nomeCell = row.insertCell(1);
-            nomeCell.textContent = cliente.nome;
-            nomeCell.style.position = 'relative';
-
+            row.insertCell(1).textContent = cliente.nome;
             row.insertCell(2).textContent = cliente.cpf;
             row.insertCell(3).textContent = cliente.endereco;
             row.insertCell(4).textContent = cliente.tipoServico;
 
             const statusCell = row.insertCell(5);
+            statusCell.style.display = 'flex';
+            statusCell.style.alignItems = 'center';
+            statusCell.style.gap = '10px';
+
             const statusIndicator = document.createElement('span');
             statusIndicator.classList.add('status-indicator');
             if (cliente.statusServico === 'ativo') {
@@ -620,15 +898,15 @@
             statusCell.appendChild(statusIndicator);
             statusCell.appendChild(statusText);
 
-            const actionButtonContainer = document.createElement('div');
-            actionButtonContainer.classList.add('action-button-container');
-            actionButtonContainer.innerHTML = `
-                <button onclick="excluirCliente(${cliente.id})"><i class="fas fa-trash-alt"></i></button>
-            `;
-            nomeCell.appendChild(actionButtonContainer);
+            const acoesCell = row.insertCell(6);
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('action-button');
+            deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>`;
+            deleteButton.onclick = () => excluirCliente(cliente.id);
+            acoesCell.appendChild(deleteButton);
         });
     }
-    
+
     function excluirCliente(id) {
         Swal.fire({
             title: 'Tem certeza?',
@@ -641,140 +919,179 @@
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                clientes = clientes.filter(cliente => cliente.id !== id);
-                salvarClientes(clientes);
-                renderizarHistorico();
-                Swal.fire(
-                    'Excluído!',
-                    `O cliente com ID ${id} foi excluído.`,
-                    'success'
-                );
+                const rowToDelete = document.querySelector(`tr[data-id='${id}']`);
+                if (rowToDelete) {
+                    rowToDelete.classList.add('fade-out');
+                    
+                    setTimeout(() => {
+                        clientes = clientes.filter(cliente => cliente.id !== id);
+                        salvarDados({ clientes, usuario: registeredUser, idCounter: clienteIdCounter });
+                        rowToDelete.remove();
+
+                        Swal.fire(
+                            'Excluído!',
+                            `O cliente com ID ${id} foi excluído.`,
+                            'success'
+                        );
+                        renderizarHistorico();
+                        atualizarGraficos();
+                    }, 300);
+                } else {
+                    Swal.fire(
+                        'Erro',
+                        'Cliente não encontrado na tabela.',
+                        'error'
+                    );
+                }
             }
         });
     }
 
     document.getElementById('cadastro-cliente-form').addEventListener('submit', function(e) {
         e.preventDefault();
-
         const nome = document.getElementById('nome').value;
         const cpf = document.getElementById('cpf').value;
         const endereco = document.getElementById('endereco').value;
         const tipoServico = document.getElementById('tipo-servico').value;
         const statusServico = document.getElementById('status-servico').value;
 
-        if (clienteIdCounter > 100) {
-             Swal.fire(
-                'Limite de Clientes Atingido',
-                'Você atingiu o limite de 100 clientes cadastrados.',
-                'warning'
-            );
+        if (clientes.length >= 100) {
+            Swal.fire('Limite de Clientes Atingido', 'Você atingiu o limite de 100 clientes cadastrados.', 'warning');
             return;
         }
-
-        const novoCliente = {
-            id: clienteIdCounter,
-            nome,
-            cpf,
-            endereco,
-            tipoServico,
-            statusServico
-        };
-
+        
+        const novoCliente = { id: clienteIdCounter++, nome, cpf, endereco, tipoServico, statusServico };
         clientes.push(novoCliente);
-        clienteIdCounter++;
 
-        salvarClientes(clientes);
-        salvarIdCounter(clienteIdCounter);
+        salvarDados({ clientes, usuario: registeredUser, idCounter: clienteIdCounter });
 
         Swal.fire({
             icon: 'success',
             title: 'Cliente Cadastrado!',
             text: `O cliente ${novoCliente.nome} (ID: ${novoCliente.id}) foi cadastrado com sucesso.`,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2000
         }).then(() => {
-            showSection('historico-section'); // Altera para a nova função
-            renderizarHistorico();
+            showSection('historico-section');
             this.reset();
         });
     });
 
+    document.getElementById('consumo-cliente-id').addEventListener('input', function() {
+        const id = parseInt(this.value);
+        const clienteInfoDiv = document.getElementById('cliente-info');
+        const clienteNomeSpan = document.getElementById('cliente-nome');
+        const clienteTipoServicoSpan = document.getElementById('cliente-tipo-servico');
+
+        const cliente = clientes.find(c => c.id === id);
+
+        if (cliente) {
+            clienteNomeSpan.textContent = cliente.nome;
+            clienteTipoServicoSpan.textContent = cliente.tipoServico;
+            clienteInfoDiv.classList.remove('hidden');
+
+            document.getElementById('leitura-anterior').value = cliente.leituraAtual || '';
+        } else {
+            clienteInfoDiv.classList.add('hidden');
+        }
+    });
+
     document.getElementById('calculo-consumo-form').addEventListener('submit', function(e) {
         e.preventDefault();
-        const leituraAtual = document.getElementById('leitura-atual').value;
-        const leituraAnterior = document.getElementById('leitura-anterior').value;
+        const id = parseInt(document.getElementById('consumo-cliente-id').value);
+        const leituraAtual = parseFloat(document.getElementById('leitura-atual').value);
+        const leituraAnterior = parseFloat(document.getElementById('leitura-anterior').value);
+        
+        if (leituraAtual < leituraAnterior) {
+            Swal.fire('Erro no Cálculo', 'A leitura atual não pode ser menor que a leitura anterior.', 'error');
+            return;
+        }
+        
         const consumo = leituraAtual - leituraAnterior;
-        document.getElementById('resultado-consumo').innerHTML = `Consumo calculado: ${consumo} m³`;
 
-        Swal.fire(
-            'Cálculo Concluído',
-            `O consumo do cliente foi calculado em ${consumo} m³.`,
-            'info'
-        );
-    });
-
-    document.getElementById('relatorio-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        Swal.fire(
-            'Relatório Gerado!',
-            'O relatório foi gerado. (A funcionalidade completa requer um servidor)',
-            'info'
-        );
-    });
-
-    document.getElementById('logout-btn').addEventListener('click', function() {
-        Swal.fire({
-            title: 'Tem certeza?',
-            text: "Você será desconectado da sua sessão.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sim, sair!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('main-content').classList.add('hidden');
-                document.getElementById('login').classList.remove('hidden');
-                const sections = document.querySelectorAll('.section-content');
-                sections.forEach(section => {
-                    section.classList.remove('active');
-                });
-                Swal.fire(
-                    'Desconectado!',
-                    'Você foi desconectado com sucesso.',
-                    'success'
-                );
-            }
-        });
-    });
-
-    // Nova função para mostrar a seção de cadastro
-    function showCadastroCliente() {
-        showSection('cadastro-cliente-section');
-    }
-
-    // Função genérica para mudar de seção, usada pelos botões de navegação e pelo novo botão de Adicionar
-    function showSection(sectionId) {
-        const currentActive = document.querySelector('.section-content.active');
-        if (currentActive) {
-            currentActive.classList.remove('active');
+        const cliente = clientes.find(c => c.id === id);
+        if (cliente) {
+            cliente.leituraAtual = leituraAtual;
+            cliente.leituraAnterior = leituraAnterior;
+            cliente.consumo = consumo;
+            salvarDados({ clientes, usuario: registeredUser, idCounter: clienteIdCounter });
+        } else {
+            Swal.fire('Cliente não encontrado', 'O ID do cliente não foi encontrado. Por favor, verifique o histórico.', 'error');
+            return;
         }
-        const targetSection = document.getElementById(sectionId);
-        if (targetSection) {
-            targetSection.classList.add('active');
-        }
-    }
 
-    document.querySelectorAll('nav a').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href').substring(1);
-            showSection(targetId);
-            if(targetId === 'historico-section'){
-                renderizarHistorico();
-            }
-        });
+        document.getElementById('resultado-consumo').innerHTML = `Consumo calculado: ${consumo.toFixed(2)} m³`;
+        Swal.fire('Cálculo Concluído', `O consumo do cliente foi calculado em ${consumo.toFixed(2)} m³.`, 'success');
+        this.reset();
+        document.getElementById('cliente-info').classList.add('hidden');
+        atualizarGraficos();
     });
+
+    function atualizarGraficos() {
+        const consumos = { residencial: 0, comercial: 0, industrial: 0 };
+        const statusCounts = { ativo: 0, inativo: 0, suspenso: 0 };
+
+        clientes.forEach(cliente => {
+            if (cliente.consumo) {
+                consumos[cliente.tipoServico] += cliente.consumo;
+            }
+            statusCounts[cliente.statusServico]++;
+        });
+        
+        const ctxBar = document.getElementById('grafico-consumo').getContext('2d');
+        if (graficoConsumo) {
+            graficoConsumo.destroy(); 
+        }
+        graficoConsumo = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Residencial', 'Comercial', 'Industrial'],
+                datasets: [{
+                    label: 'Consumo Total (m³)',
+                    data: [consumos.residencial, consumos.comercial, consumos.industrial],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: { responsive: true, scales: { y: { beginAtZero: true } } }
+        });
+
+        const ctxPie = document.getElementById('grafico-status-clientes').getContext('2d');
+        if (graficoStatusClientes) {
+            graficoStatusClientes.destroy();
+        }
+        graficoStatusClientes = new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: ['Ativo', 'Inativo', 'Suspenso'],
+                datasets: [{
+                    label: 'Status de Clientes',
+                    data: [statusCounts.ativo, statusCounts.inativo, statusCounts.suspenso],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(255, 206, 86, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: { responsive: true }
+        });
+    }
 </script>
 
 </body>
